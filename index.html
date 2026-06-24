@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+ 
+  <!-- A city-->
+ 
+  <head>
+    ...
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-babia-components/dist/aframe-babia-components.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.0.0/dist/aframe-environment-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+    <script>
+     AFRAME.registerComponent('toggle-panel', {
+        schema: {
+         target: { type: 'selector' },
+          group: { type: 'string', default: '.info-panel' }
+       },
+
+        init: function () {
+         this.el.addEventListener('click', () => {
+            const targetPanel = this.data.target;
+           const allPanels = document.querySelectorAll(this.data.group);
+           const wasVisible = targetPanel.getAttribute('visible');
+
+        // Cierra todos los carteles
+        allPanels.forEach(panel => {
+          panel.setAttribute('visible', false);
+           });
+
+        // Abre o cierra el cartel pulsado
+         targetPanel.setAttribute('visible', !wasVisible);
+           });
+         }
+       });
+    </script>
+  
+    <!-- Para entender el alfabeto español-->
+    <meta charset="UTF-8">
+
+  </head>
+
+  <body>
+    
+    <a-scene 
+      fog="type: exponential; color: #f4f2ec; density: 0.00015"
+      renderer="colorManagement: true; physicallyCorrectLights: true; exposure: 1.2">
+      
+    
+      
+      <!-- Environment -->
+
+      <a-sky src="ASSETS/HDRI_MEI.png" rotation="0 0 0"></a-sky>
+
+      
+      <!-- Light  -->
+        
+      <a-entity light="type: ambient; intensity: 2.25" color="#D6DDFF"></a-entity>
+      <a-entity light="type: directional; intensity: 1.2; castShadow: true" position="0 3 0" color="#FFF8E8"></a-entity>
+      
+      <a-light type="directional" position="4 8 4" intensity="1" color="#FFF8E8"></a-light>
+      <a-light type="directional" position="-4 8 4" intensity="0.8" color="#D6EFFF"></a-light>
+      <a-light type="directional" position="-4 8 -4" intensity="1" color="#FFF8E8"></a-light>
+      <a-light type="directional" position="-4 0 -4" intensity="1" color="#FFF8E8"></a-light>
+      <a-light type="directional" position="4 8 -4" intensity="0.8" color="#D6EFFF"></a-light>
+
+
+     
+      <!-- Camera -->
+      <a-entity movement-controls="fly: false" position="0 0 0">
+        <a-entity id="camera" camera position="0 1.6 3" look-controls></a-entity>
+        <a-entity cursor="rayOrigin:mouse"></a-entity>
+        <a-entity laser-controls="hand: right"></a-entity>
+      </a-entity>
+
+
+
+      <!-- Reference sphere-->
+       <a-sphere position="0 0 0" radius="0.2" color="#EF2D5E" visible="false"></a-sphere>
+      
+      
+        
+      
+       
+      <!-- ********************************* -->
+      <!--        Carteles       -->        
+      <!-- ********************************* -->
+       
+  <!-- 00 - INFO -->      
+       
+    
+
+
+        <!-- CARTEL 00 -->
+        <a-entity id="cartel-00" visible="true" position="0 2.5 -9" rotation="0 0 0">
+
+          <a-plane width="2.6" height="1.55" color="#F4F2EC" opacity="0.5" material="shader: flat"></a-plane>
+          <a-image src="ASSETS/xrcomlab-logo-web.png" position="0 -0.55 0.08" transparent="true" width="4.38" height="1.17" scale="0.25 0.25 0.25"></a-image>
+          <a-text
+            value="ENTES IMPERFECTOS
+            
+            Proyecto realizado por Jose Luis Rubio-Tamayo y Sofia Lopez Soto
+
+            ARTISTAS COLABORADORES:
+            Lucia Granado - David Molina
+            Carlos Vargas - Denitsa Gaberska
+            Sofia Lopez - Sonia Rodriguez
+            Leydi M. Hernandez - Anahi Serna"
+            align="center" color="#222222" width="2.1" position="0 0.175 0.01">
+          </a-text>
+
+        </a-entity>
+
+
+
+    <!-- 01 - LUCIA -->      
+       
+        <!-- BOTÓN 01 -->
+        <a-entity id="boton-cartel-01" class="clickable" position="0.75 0.9 0.75" rotation="0 0 0" toggle-panel="target: #cartel-01">
+
+           <a-plane width="0.55" height="0.2" color="#F4F2EC" opacity="0.95" material="shader: flat"></a-plane>
+           <a-text value="Info" align="center" color="#222222" width="2.2" position="0 0 0.01"></a-text>
+
+        </a-entity>
+
+
+        <!-- CARTEL 01 -->
+        <a-entity id="cartel-01" class="info-panel" visible="false" position="0.75 1.5 0.75" rotation="0 0 0">
+
+          <a-plane width="2.4" height="1.15" color="#F4F2EC" opacity="0.7" material="shader: flat"></a-plane>
+
+          <a-text
+            value="Obra 01\n\n__________________________________
+            
+            - Lucia Granado Gutierrez -"
+            align="center" color="#222222" width="2.1" position="0 0.05 0.01">
+          </a-text>
+
+        </a-entity>
+
+
+     
+
+      <!-- ********************************* -->
+      <!--        Assets Enviro       -->        
+      <!-- ********************************* -->
+      
+
+
+      
+      <!-- Entorno -->
+            
+    
+      <a-assets>
+        <a-asset-item id="Domo" src="ASSETS/Dome_v2_MEI.glb"></a-asset-item>
+      </a-assets>
+   
+
+      <a-entity gltf-model="#Domo" scale="1.6 1.6 1.6" position="0 0.01 0" ></a-entity>
+       
+      
+
+
+      <!-- Ground -->
+         
+      <a-assets>
+        <a-asset-item id="ground" src="ASSETS/concrete_floor_worn_001_diff_4k.png"></a-asset-item>
+      </a-assets>
+      
+      <a-image src="#ground" height="60" width="60" rotation="-90 90 0" repeat="50 50" shader= "flat" material="color: #E6E3E3; roughness: 0.18; metalness: 0.05"></a-image>
+      
+ 
+
+
+
+
+    </a-scene>
+  </body>
+
+</html>
